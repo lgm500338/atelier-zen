@@ -1,0 +1,13 @@
+{
+  "name": "atelier-zen-toss",
+  "private": true,
+  "version": "1.0.0",
+  "description": "멍때리는 아틀리에 앱인토스(토스 미니앱) 번들. 웹 버전과 같은 ../index.html을 그대로 사용해요.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs && ait build"
+  },
+  "dependencies": {
+    "@apps-in-toss/web-framework": "3.9.0"
+  }
+}
