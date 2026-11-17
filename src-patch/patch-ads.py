@@ -16,6 +16,8 @@ rep('Object.assign(e=>ei(`showFullScreenAd`,',
 # 1-2) 배너 SDK(TossAds)도 window로 꺼내기
 rep('Object.assign(li,{isSupported:ui}),window.__AZAdsSDK=',
     'Object.assign(li,{isSupported:ui}),window.__AZBanner={init:ai,attach:si,destroyAll:li},window.__AZAdsSDK=')
+# 1-3) 잠들기 끄기 버튼·알림을 하단 배너 위로
+rep('calc(var(--sab, 0px) + 1.25rem)','calc(var(--sab, 0px) + var(--az-banner-h, 0px) + 1.25rem)',2)
 # 2) 멍때리기: 다음 그림으로 넘어갈 때 광고 (잠들기 모드 Ce면 광고 없음)
 rep('onNextArtwork:i===`lesson`?()=>y(e=>(e+1)%po.length):je,',
     'onNextArtwork:window.__azNext(Ce,i===`lesson`?()=>y(e=>(e+1)%po.length):je),')

@@ -1,7 +1,7 @@
 /* 멍때리는 아틀리에 — 인앱 광고 (AZAds) v2
  * - 멍때리기: 처음 2분, 이후 4분이 지나면 "다음 그림으로 넘어갈 때" 전면형 광고
  * - 컬러링: 새 도안 3장 무료, 그 뒤로는 보상형 광고를 보면 3장 더 (하루마다 무료 3장 다시 채움)
- * - 화면 하단 배너 (잠들기 모드에서는 숨김)
+ * - 화면 하단 배너 (잠들기 모드에서는 어두운 테마, 끄기 버튼은 배너 위로)
  * - 광고를 못 받아오면 1분 → 2분 → 4분 간격으로 최대 3번만 다시 요청, 그 뒤엔 꼭 필요할 때만
  * - 같은 광고를 동시에 두 번 요청하지 않음, 필요한 때가 가까워졌을 때만 미리 불러옴
  * - 잠들기 모드에서는 광고 없음, 광고 중에는 배경 음악·효과음 잠시 멈춤
@@ -129,7 +129,7 @@
   };
 
   /* ---------- 하단 배너 ---------- */
-  var banner = { inited: false, initing: false, slot: null, box: null, spacer: null, fails: 0, timer: 0 };
+  var banner = { inited: false, initing: false, slot: null, theme: '', box: null, spacer: null, fails: 0, timer: 0 };
   function bsdk() { return window.__AZBanner || null; }
   function bannerSupported() {
     var b = bsdk();
@@ -153,6 +153,8 @@
   function setVisible(on) {
     if (!banner.box) return;
     banner.box.style.display = on ? 'block' : 'none';
+    banner.box.style.background = sleepingNow ? '#0c0a09' : '#fafaf9';
+    document.documentElement.style.setProperty('--az-banner-h', on ? BANNER_H + 'px' : '0px'); // 잠들기 끄기 버튼·알림을 배너 위로
     banner.spacer.style.height = on ? 'calc(' + BANNER_H + 'px + env(safe-area-inset-bottom,0px))' : '0';
   }
   function dropBanner() {
@@ -167,13 +169,16 @@
     if (wait) { clearTimeout(banner.timer); banner.timer = setTimeout(function () { banner.timer = 0; syncBanner(); }, wait); }
   }
   function attachBanner() {
+    var theme = sleepingNow ? 'dark' : 'light';
+    if (banner.slot && banner.theme !== theme) dropBanner(); // 잠들기 모드 전환 시 테마 바꿔 다시 붙이기
     if (banner.slot || banner.timer || banner.fails > RETRY_MS.length) return;
     ensureBox();
     banner.slotEl.innerHTML = '';
     setVisible(true);
     try {
+      banner.theme = theme;
       banner.slot = bsdk().attach(AD_IDS.banner, banner.slotEl, {
-        theme: 'light', tone: 'blackAndWhite', variant: 'expanded',
+        theme: theme, tone: 'blackAndWhite', variant: 'expanded',
         callbacks: {
           onAdRendered: function () { banner.fails = 0; },
           onNoFill: bannerFailed,
@@ -184,7 +189,6 @@
   }
   function syncBanner() {
     if (!bannerSupported()) return;
-    if (sleepingNow) { dropBanner(); return; } // 잠들기 모드에서는 배너 없음
     if (banner.inited) { attachBanner(); return; }
     if (banner.initing) return;
     banner.initing = true;
