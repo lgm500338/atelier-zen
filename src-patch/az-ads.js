@@ -13,7 +13,7 @@
   var AD_IDS = {
     interstitial: 'ait.v2.live.03fbbfe641a7434e', // 멍때리기_전면형
     rewarded: 'ait.v2.live.e4344b2ea1e64c56',     // 새도안_보상형
-    banner: ''                                    // 하단_배너 — 콘솔에서 배너 광고 그룹을 만든 뒤 ID를 넣어 주세요 (비어 있으면 배너 없음)
+    banner: 'ait.v2.live.867ddb114a904fea'        // 멍때리기_배너 (하단 고정)
   };
   var FIRST_AD_MS = 2 * 60 * 1000;   // 첫 전면형까지 2분
   var NEXT_AD_MS = 4 * 60 * 1000;    // 그 뒤 4분 간격
