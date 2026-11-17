@@ -13,6 +13,9 @@ rep('Object.assign(e=>ei(`loadFullScreenAd`,',
     'window.__AZAdsSDK=window.__AZAdsSDK||{};window.__AZAdsSDK.load=Object.assign(e=>ei(`loadFullScreenAd`,')
 rep('Object.assign(e=>ei(`showFullScreenAd`,',
     'window.__AZAdsSDK.show=Object.assign(e=>ei(`showFullScreenAd`,')
+# 1-2) 배너 SDK(TossAds)도 window로 꺼내기
+rep('Object.assign(li,{isSupported:ui}),window.__AZAdsSDK=',
+    'Object.assign(li,{isSupported:ui}),window.__AZBanner={init:ai,attach:si,destroyAll:li},window.__AZAdsSDK=')
 # 2) 멍때리기: 다음 그림으로 넘어갈 때 광고 (잠들기 모드 Ce면 광고 없음)
 rep('onNextArtwork:i===`lesson`?()=>y(e=>(e+1)%po.length):je,',
     'onNextArtwork:window.__azNext(Ce,i===`lesson`?()=>y(e=>(e+1)%po.length):je),')
